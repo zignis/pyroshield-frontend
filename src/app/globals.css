@@ -1,13 +1,11 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --active-bg: #efefef;
+  --active-fg: #0a0a0a;
+  --divider: #464646;
+  --elevation: #212121;
+  --radius-sm: 5px;
 }
 
 html,

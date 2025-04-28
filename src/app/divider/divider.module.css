@@ -1,0 +1,13 @@
+.divider {
+    background: var(--divider);
+}
+
+.divider[data-layout="vertical"] {
+    width: 1px;
+    height: 100%;
+}
+
+.divider[data-layout="horizontal"] {
+    height: 1px;
+    width: 100%;
+}

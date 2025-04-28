@@ -1,0 +1,19 @@
+.stat {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 4px;
+    padding: 8px 16px;
+    border: 1px solid var(--divider);
+    border-radius: var(--radius-sm);
+}
+
+.heading {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.value {
+    font-size: 32px;
+    font-weight: 700;
+}

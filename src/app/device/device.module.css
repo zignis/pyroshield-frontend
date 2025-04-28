@@ -1,0 +1,52 @@
+.device {
+    position: relative;
+    height: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid var(--divider);
+    border-radius: var(--radius-sm);
+    padding: 12px 10px;
+    font-size: 16px;
+}
+
+.device.active {
+    cursor: pointer;
+}
+
+.device.active:not(.selected):hover {
+    background-color: var(--elevation);
+
+    .indicator {
+        box-shadow: 0 0 0 2px var(--elevation);
+    }
+}
+
+.device.selected {
+    background-color: var(--active-bg);
+    color: var(--active-fg);
+}
+
+.device:not(.active) {
+    opacity: 0.7;
+}
+
+.indicator {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    background-color: var(--color, #fc175c);
+    box-shadow: 0 0 0 2px var(--background);
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.indicator[data-active="true"] {
+    --color: #17fc67
+}
+
+.distance {
+    font-size: 14px;
+}
