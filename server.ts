@@ -7,6 +7,7 @@ import EventEmitter from 'node:events';
 import { SerialResponse, Cache, Message } from './types';
 
 const APP_CACHE: Cache = {};
+const MAX_DEVICE_MESSAGES = 500;
 
 const serialPort = new SerialPort({
     path: '/dev/cu.usbserial-130', // Receiver path
@@ -80,6 +81,11 @@ parser.on('data', (line) => {
         APP_CACHE[key].connected = true;
         APP_CACHE[key].messages.push(message);
         APP_CACHE[key].last_message = Date.now();
+
+        // Limit messages array size
+        while (APP_CACHE[key].messages.length >= MAX_DEVICE_MESSAGES) {
+            APP_CACHE[key].messages.unshift();
+        }
 
         eventEmitter.emit('message', message);
     } catch (err) {
