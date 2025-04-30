@@ -1,0 +1,34 @@
+.mapContainer {
+    display: flex;
+    height: 270px;
+    overflow: hidden;
+    border: 1px solid var(--divider);
+    border-radius: var(--radius-sm);
+    justify-content: center;
+    align-items: center;
+}
+
+.mapContainer > span[data-error] {
+    opacity: 0.5;
+}
+
+.map {
+    width: 100%;
+    height: 100%;
+}
+
+.fade {
+    animation: pulse-animation 1500ms 1;
+}
+
+@keyframes pulse-animation {
+    0% {
+        stroke-width: 0;
+        opacity: 1;
+    }
+
+    100% {
+        stroke-width: 150;
+        opacity: 0;
+    }
+}

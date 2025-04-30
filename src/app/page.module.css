@@ -1,6 +1,6 @@
 .main {
   display: grid;
-  grid-template-columns: 0.7fr 16px 1.3fr;
+  grid-template-columns: 0.8fr 16px 1.2fr;
   min-height: 100svh;
   font-family: var(--font-geist-sans);
 }
@@ -12,10 +12,6 @@
   padding: 24px;
 }
 
-.right {
-
-}
-
 .deviceList {
   list-style: none;
   display: flex;
@@ -25,7 +21,31 @@
 
 .statContainer {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px;
+}
+
+.statContainer > div {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.statContainer > span[data-spacer] {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  padding: 8px 0 2px 4px;
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+.statContainer > span[data-spacer] > span {
+  flex-grow: 1;
+  height: 2px;
+  background: var(--divider);
+  opacity: 0.6;
 }
