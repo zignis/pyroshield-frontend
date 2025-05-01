@@ -59,7 +59,7 @@ export const CO2Chart = ({ messages }: ChartProps): React.ReactElement => {
                             colorMap: {
                                 type: 'continuous',
                                 min: 400,
-                                max: 5000,
+                                max: 800,
                                 color: ['rgba(29,218,96)', 'rgba(238,0,0)'],
                             },
                         },
