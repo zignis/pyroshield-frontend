@@ -17,13 +17,15 @@ import {
 import {
     consumedMemoryPercentage,
     getChargePercentage,
+    isThresholdExceeded,
     rssiToPercentage,
     selectAverage,
 } from '@/app/utils';
 import dynamic from 'next/dynamic';
-import { CHART_SAMPLE_SIZE, CO2_THRESHOLD } from '../../constants';
+import { CHART_SAMPLE_SIZE } from '../../constants';
 import { CO2Chart, TemperatureChart } from '@/app/chart';
 import clsx from 'clsx';
+import Audio from '@/app/audio';
 
 const GeoLocation = dynamic(() => import('@/app/geo'), {
     ssr: false,
@@ -91,10 +93,12 @@ const DeviceStats = (): React.ReactElement | null => {
                 <Stat
                     heading={'CO2'}
                     style={{
-                        color:
-                            data.latest.co2_ppm >= CO2_THRESHOLD
-                                ? '#ee0000'
-                                : 'inherit',
+                        color: isThresholdExceeded(
+                            data.latest.co2_ppm,
+                            data.latest.dht22.temp
+                        )
+                            ? '#ee0000'
+                            : 'inherit',
                     }}
                 >
                     {data.latest.co2_ppm.toLocaleString()} <span>PPM</span>
@@ -263,8 +267,19 @@ const FetchData = (): null => {
 };
 
 export default function Home() {
+    const [canPlayAudio, setCanPlayAudio] = React.useState<boolean>(false);
     return (
         <main className={styles.main}>
+            {!canPlayAudio && (
+                <div className={styles.overlay}>
+                    <button
+                        type={'button'}
+                        onClick={(): void => setCanPlayAudio(true)}
+                    >
+                        Grant audio permission
+                    </button>
+                </div>
+            )}
             <section className={styles.left}>
                 <DeviceStats />
                 <Divider layout={'horizontal'} />
@@ -288,6 +303,7 @@ export default function Home() {
             </section>
             <FetchData />
             <GeoLocation />
+            <Audio />
         </main>
     );
 }

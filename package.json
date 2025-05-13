@@ -26,6 +26,7 @@
     "react-geolocated": "^4.3.0",
     "react-leaflet": "^5.0.0",
     "react-redux": "^9.2.0",
+    "react-use-audio-player": "^4.0.2",
     "serialport": "^13.0.0"
   },
   "devDependencies": {

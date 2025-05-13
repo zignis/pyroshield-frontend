@@ -1,6 +1,7 @@
 import { AppState } from '@/app/store';
 import { Message } from '../../types';
 import { createSelector } from 'reselect';
+import { CO2_THRESHOLD, TEMP_THRESHOLD } from '../../constants';
 
 const BATTERY_VOLTAGE_CONVERSION_TABLE = [
     3.2, 3.25, 3.3, 3.35, 3.4, 3.45, 3.5, 3.55, 3.6, 3.65, 3.7, 3.703, 3.706,
@@ -92,4 +93,16 @@ export const rssiToPercentage = (rssi: number): number => {
 export const consumedMemoryPercentage = (consumed: number): number => {
     const SRAM = 20 * 1024; // 20kb for STM32
     return Math.round((consumed / SRAM) * 100);
+};
+
+/**
+ * Returns a boolean value indicating whether the emergency threshold has been exceeded.
+ * @param co2_ppm The CO2 PPM value.
+ * @param outside_temp The outside temperature reading.
+ */
+export const isThresholdExceeded = (
+    co2_ppm: number,
+    outside_temp: number
+): boolean => {
+    return co2_ppm >= CO2_THRESHOLD || outside_temp >= TEMP_THRESHOLD;
 };

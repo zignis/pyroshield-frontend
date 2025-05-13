@@ -5,10 +5,12 @@ import { useDispatch, useSelector, Provider } from 'react-redux';
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Cache, Message } from '../../types';
 import { MAX_DEVICE_MESSAGES } from '../../constants';
+import { isThresholdExceeded } from '@/app/utils';
 
 export interface AppState {
     cache: Cache;
     selectedDevice: string | null;
+    thresholdExceededDevices: Record<string, boolean>;
     receiverLocation?: { latitude: number; longitude: number }; // Location of this device.
 }
 
@@ -16,6 +18,7 @@ const appSlice = createSlice({
     name: 'app',
     initialState: {
         cache: {},
+        thresholdExceededDevices: {},
         selectedDevice: null,
     } as AppState,
     reducers: {
@@ -71,6 +74,12 @@ const appSlice = createSlice({
                 power,
                 sys,
             };
+
+            // Device state
+            state.thresholdExceededDevices[device_id] = isThresholdExceeded(
+                co2_ppm,
+                dht22.temp
+            );
 
             if (!state.cache[device_id]) {
                 state.cache[device_id] = {

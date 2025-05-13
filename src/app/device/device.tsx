@@ -3,7 +3,7 @@ import styles from './device.module.css';
 import clsx from 'clsx';
 import { getDistance } from 'geolib';
 import { useAppSelector } from '@/app/store';
-import { CO2_THRESHOLD } from '../../../constants';
+import { isThresholdExceeded } from '@/app/utils';
 
 export interface DeviceProps extends React.ComponentPropsWithoutRef<'li'> {
     deviceId: string;
@@ -66,7 +66,10 @@ const Device = ({
             <span
                 data-active={String(active)}
                 data-alert={String(
-                    (device.latest?.co2_ppm || 0) >= CO2_THRESHOLD
+                    isThresholdExceeded(
+                        device.latest?.co2_ppm || 0,
+                        device.latest?.dht22?.temp || 0
+                    )
                 )}
                 key={device.messages.length}
                 className={styles.indicator}

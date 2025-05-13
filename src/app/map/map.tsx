@@ -12,7 +12,7 @@ import {
 import { useAppSelector } from '@/app/store';
 import { Icon, LatLngExpression } from 'leaflet';
 import styles from './map.module.css';
-import { CO2_THRESHOLD } from '../../../constants';
+import { isThresholdExceeded } from '@/app/utils';
 
 const Markers = (): React.ReactElement => {
     const cache = useAppSelector((state) => state.cache);
@@ -28,10 +28,12 @@ const Markers = (): React.ReactElement => {
                                 parseFloat(data.latest!.gps.lng),
                             ]}
                             pathOptions={{
-                                color:
-                                    (data.latest?.co2_ppm || 0) >= CO2_THRESHOLD
-                                        ? '#ee0000'
-                                        : '#1dda60',
+                                color: isThresholdExceeded(
+                                    data.latest?.co2_ppm || 0,
+                                    data.latest?.dht22?.temp || 0
+                                )
+                                    ? '#ee0000'
+                                    : '#1dda60',
                             }}
                             radius={1}
                             fillOpacity={1}
@@ -43,12 +45,14 @@ const Markers = (): React.ReactElement => {
                                 parseFloat(data.latest!.gps.lng),
                             ]}
                             pathOptions={{
-                                color:
-                                    (data.latest?.co2_ppm || 0) >= CO2_THRESHOLD
-                                        ? '#ee0000'
-                                        : data.connected
-                                          ? '#129a43'
-                                          : '#7c7c7c',
+                                color: isThresholdExceeded(
+                                    data.latest?.co2_ppm || 0,
+                                    data.latest?.dht22?.temp || 0
+                                )
+                                    ? '#ee0000'
+                                    : data.connected
+                                      ? '#129a43'
+                                      : '#7c7c7c',
                             }}
                             stroke
                             fillOpacity={0.7}
@@ -79,27 +83,25 @@ const Map = (): React.ReactElement | null => {
 
     return (
         <div className={styles.mapContainer}>
-            {clientCoords ? (
-                <MapContainer
-                    className={styles.map}
-                    center={coords}
-                    zoom={16}
-                    scrollWheelZoom={true}
-                >
-                    <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
+            <MapContainer
+                className={styles.map}
+                center={coords}
+                zoom={16}
+                scrollWheelZoom={true}
+            >
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {clientCoords && (
                     <Marker icon={markerIcon} position={coords}>
                         <Tooltip>
                             <b>Home</b> (receiver)
                         </Tooltip>
                     </Marker>
-                    <Markers />
-                </MapContainer>
-            ) : (
-                <span data-error={''}>Location unavailable</span>
-            )}
+                )}
+                <Markers />
+            </MapContainer>
         </div>
     );
 };
