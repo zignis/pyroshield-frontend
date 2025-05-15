@@ -10,7 +10,7 @@ import { MAX_DEVICE_MESSAGES } from './constants';
 const APP_CACHE: Cache = {};
 
 const serialPort = new SerialPort({
-    path: '/dev/cu.usbserial-130', // Receiver path
+    path: process.env.RECEIVER_PORT as string, // Receiver path
     baudRate: 9600,
 });
 const parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' }));
